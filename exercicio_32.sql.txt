@@ -1,0 +1,36 @@
+- Faça uma consulta que retorne a lista de filmes e suas categorias correspondentes.
+SELECT title, category_id FROM film a
+INNER JOIN film_category b ON a.film_id = b.film_id
+
+
+- Faça uma consulta que retorne a lista de todos os atores com o número filmes que cada ator
+participou. Ordene a lista pelo numero de filmes, iniciando pelos atores que mais atuaram.
+SELECT a.actor_id, a.first_name, a.last_name, COUNT(b.film_id) AS filmesAtuados FROM actor a
+INNER JOIN film_actor b ON a.actor_id = b.actor_id
+GROUP BY a.actor_id
+ORDER BY filmesAtuados DESC
+
+
+- Faça uma consulta que retorne a lista de atores que atuaram em filmes com mais de duas horas de
+duração (120min). Ordene a lista pelo numero de filmes que cada ator participou.
+
+SELECT ac.actor_id, ac.first_name, ac.last_name, fc.film_id FROM actor ac
+INNER JOIN film_actor fc ON ac.actor_id = fc.actor_id 
+WHERE fc.film_id in (SELECT a.film_id FROM film a 
+WHERE a.`length` > 120)
+
+- Crie uma consulta para cada consulta do exercício anterior que retorne o numero de registros
+encontrados pela busca
+ SELECT COUNT(a.film_id) FROM film a
+ INNER JOIN film_category b ON a.film_id = b.film_id
+ 
+SELECT COUNT(b.film_id) AS filmesAtuados FROM actor a
+INNER JOIN film_actor b ON a.actor_id = b.actor_id
+
+
+SELECT ac.actor_id, ac.first_name, ac.last_name, COUNT(fc.film_id) AS filmes_grandes FROM actor ac
+INNER JOIN film_actor fc ON ac.actor_id = fc.actor_id 
+WHERE fc.film_id in (SELECT a.film_id FROM film a 
+WHERE a.`length` > 120)
+GROUP BY ac.actor_id
+ORDER BY filmes_grandes DESC
